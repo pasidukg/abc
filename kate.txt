@@ -1,0 +1,419 @@
+  ----2022----
+---Question 01---
+**Store the Custermer Registation Detials**
+
+#!/bin/bash
+
+# Check if the log file exists
+if [ -e info_customer.log ]; then
+    echo "Log file 'info_customer.log' already exists."
+    
+    # Check if the log file is writable
+    if [ ! -w info_customer.log ]; then
+        echo "Log file is not writable. Adding write permission..."
+        chmod +w info_customer.log
+    fi
+else
+    # Create the log file and add write permission
+    echo "Creating log file 'info_customer.log'..."
+    touch info_customer.log
+    chmod +w info_customer.log
+fi
+
+current_time=$(date +%H:%M:%S)
+current_date=$(date +%Y:%m:%d)
+current_directory=$(pwd)
+user_name=$(uname)
+
+	echo "This is Customers Details" >> info_customer.log
+	echo "The Script was run by $hostname on $current_date at $current_time" >> info_customer.log
+	echo "The Opreation system is $user_name" >> info_customer.log
+	echo "The Working Directry is $current_directory" >> info_customer.log
+	echo "Shell Name is $0" >> info_customer.log
+
+
+
+opfun(){
+	echo "Enter Your Phone Number: "
+read pno
+
+echo "1. Customer Details"
+echo "2. Continue"
+echo "3. Exit"
+echo "Choose Your Option:"
+read option
+
+case $option in 
+
+1)
+cus
+;;
+
+2)
+opfun
+;;
+
+3)
+exit 1
+;;
+
+*)
+echo "Invalid Option! Try again"
+;;
+
+esac
+}
+
+cus(){
+	echo "**** Customer Details ****"
+read -p "Customer Name: " name 
+read -p "Age: " age 
+read -p "User Name: " unam 
+read -sp "Password: " pas; 
+read -sp "Confirm Password: " cpas;
+if  [[ $pas == $cpas ]] 
+then
+	echo "Customer Password Matched";
+else
+	echo "Customer Password Not Matched";
+	#cus
+fi
+
+	echo "Details of the Student $pno" >> info_customer.log
+	echo "$name" >> info_customer.log
+	echo "$age" >> info_customer.log
+	echo "$unam" >> info_customer.log
+	echo "$pas" >> info_customer.log
+
+}
+
+opfun
+
+
+
+
+
+---Question 02---
+Readable,writable,executable,graterthan,character special file
+
+
+#!/bin/bash
+
+check_file() {
+    if [ -e "$1" ]; then
+        echo "File exists."
+        
+        if [ -r "$1" ]; then
+            echo "File is readable."
+        fi
+        
+        if [ -w "$1" ]; then
+            echo "File is writable."
+        fi
+        
+        if [ -x "$1" ]; then
+            echo "File is executable."
+        fi
+        
+        if [ -s "$1" ]; then
+            echo "File has size greater than 0."
+        fi
+        
+        if [ -c "$1" ]; then
+            echo "File is a character special file."
+        fi
+    else
+        echo "File does not exist. Creating file..."
+        touch "$1"
+        echo "File created."
+    fi
+}
+
+read -p "Enter the filename: " filename
+read -p "Enter the desired location: " location
+
+# Check if location ends with a slash
+if [[ ! "$location" =~ /$ ]]; then
+    location="$location/"
+fi
+
+full_path="$location$filename"
+
+check_file "$full_path"
+
+
+
+
+
+
+---Question 03---
+Student Mark System
+
+mainfun(){
+echo ""
+echo "Please select your choice..."
+echo "	1. Enter the marks"
+echo "	2. Display"
+echo "	3. Lowest and Highest"
+echo "	4. Has Duplicates?"
+echo "	5. Summation of all marks"
+echo "	6. Exit"
+echo ""
+
+read select
+
+case $select in
+	1)
+		for((i=0; i<5; i++))
+		do
+			echo "Enter mark $i: "
+			read arr[$i]
+		done
+
+		mainfun
+		;;
+
+	2)	
+		echo ""
+		echo "Array in original order"
+		echo ${arr[*]}
+
+		# Performing Bubble sort 
+		for ((i = 0; i<5; i++))
+		do
+		    
+		    for((j = 0; j<5-i-1; j++))
+		    do
+		    
+		        if [ ${arr[j]} -gt ${arr[$((j+1))]} ]
+		        then
+		            # swap
+		            temp=${arr[j]}
+		            arr[$j]=${arr[$((j+1))]}  
+		            arr[$((j+1))]=$temp
+		        fi
+		    done
+		done
+
+		echo ""
+		echo "Array in sorted order :"
+		echo ${arr[*]}
+
+		mainfun
+		;;
+
+	3)
+		echo ""
+		echo "Lowest mark is: ${arr[0]}"
+		echo "Highest mark is: ${arr[4]}"
+
+		mainfun
+		;;
+
+	4)
+		#duplicates
+
+		#mainfun
+
+;;
+	5)
+		echo ""
+		echo -n "Summation of all marks: "
+		sum=0
+		for i in ${arr[@]};
+		do
+			sum=`expr $sum + $i`
+		done
+		echo $sum
+
+		mainfun
+		;;
+
+	6)
+		exit 1
+		;;
+	
+	*) 	echo "Invalid Input! Try again.."
+
+		mainfun
+		;;
+esac
+
+}
+
+mainfun
+
+
+
+
+
+
+---Find Average---
+
+#!/bin/bash
+find_average() {
+
+echo "enter first"
+read num1
+echo "enter second"
+read num2
+echo "enter third"
+read num3
+
+
+echo "averaging numbers"
+let sum=num1+num2+num3
+return $((sum / 3))
+}
+
+find_average
+
+echo "this is average : $?"
+
+
+
+
+
+---Grade calculator---
+
+#!/bin/bash
+
+echo "Enter your marks"
+read mark
+
+if [ $mark -le 100 -a $mark -ge 80 ];
+then 
+	echo "your grade : A"
+
+elif [ $mark -ge 60 -a $mark -le 79 ];
+	then 
+		echo "Your grade : B"
+
+	elif [ $mark -ge 40 -a $mark -le 59 ];
+		then
+			echo "Your grade is : C"
+
+		elif [ $mark -ge 20 -a -le 39 ];
+			then 
+				echo "Your grade is D"
+
+			elif [ $mark -ge 10 -a -le 19 ];
+				then 
+					echo "Your grade : E"
+
+				else 
+					echo " ...Invalid Input..."
+				fi
+
+
+
+
+---Star pattern---
+
+#!/bin/ bash
+
+x=5
+
+for((i=1; i<=x; i++))
+do
+	for((j=1; j<=i; j++))
+	do
+		echo -n "*"
+	done
+	echo
+done
+
+
+
+
+
+
+---Reverse Number---
+
+#!/bin/bash
+
+echo "Enter number:"
+read num
+
+n=$num
+s=0
+re=0
+
+while [ $n -gt 0 ]
+do
+	s=$(($n % 10))
+	re=$(($re * 10 + $s))
+	n=$(($n / 10))
+
+done
+
+echo "Reverse of Entered Number: $re"
+
+
+
+
+
+---Calculator---
+
+#!/bin/bash
+
+echo "** Calculator **"
+
+read -p "Enter First Number: " num1
+read -p "Enter Second Number: " num2
+
+echo "Enter Your Option"
+echo "1) + "
+echo "2) - "
+echo "3) / "
+echo "4) * "
+
+read opti
+
+case $opti in 
+
+	1) 
+	sum=$((num1 + num2))
+
+	echo "Summation is: $sum"
+	;;
+
+	2)
+	sub=$((num1 - num2))
+		echo "Substraction is: $sub"
+	;;
+
+	3)
+	dev=$((num1 / num2))
+		echo "Division is: $dev"
+	;;
+
+	4)
+	nul=$((num1 * num2))
+	echo "Multiplication is: $mul"
+	;;
+
+	*)
+	echo "Invalid Option choice!"
+	;;
+
+esac
+
+
+
+
+---add 5 elements to array using for loop---
+
+for((i=0; i<5; i++))
+	do
+		echo "Enter mark $i: "
+		read arr[$i]
+	done
+
+
+
+
+
+
+
+
